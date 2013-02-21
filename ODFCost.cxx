@@ -52,7 +52,7 @@ ODFCost::DoubleImageType::Pointer ODFCost::Cost ( ODFCost::LabelImageType::Point
   std::cout << "Entering main loop" << std::endl ;
   unsigned i = 0 ;
 
-/* Display constant values*/
+/* Display constant values*//*
 unsigned long int x1=46;
 unsigned long int y1=47;
 unsigned long int z1=38;
@@ -72,7 +72,7 @@ for ( unsigned long dir = 0 ; dir < this->m_NumberOfDirs ; dir++ )
 	std::cout<<"dir=,"<<dir<<" \t,"<<this->m_CoordinateTable[dir][0]<<"\t,"<<this->m_CoordinateTable[dir][1]<<"\t,"<<this->m_CoordinateTable[dir][2]<<"\t,]"<<std::endl;
 //	std::cout<<"dir="<<dir<<" \t: Finsler1=,"<<this->m_FinslerTable[voxelAndIn1]<<" , Finsler2=,"<<this->m_FinslerTable[voxelAndIn2]<<std::endl;
 }
-
+*/
   while ( !this->m_Converged ) 
     {
       iterationNum ++ ;
@@ -531,7 +531,9 @@ for ( unsigned int inDir = 0 ; inDir < this->m_NumberOfDirs ; inDir++ )
 bool update=false;
 unsigned long UpdateneighborIterator;
 unsigned int UpdateoutDir;
-  unsigned int voxelAndIn = voxelIndexTimesNDirs + inDir ;
+unsigned int voxelAndIn = voxelIndexTimesNDirs + inDir ;
+
+double NewMiniAvgCost = this->m_AvgCostArray[voxelAndIn] ;
 
   // instead of all 26 neighbors, only visit the neighbors as indicated by fstar for our current traversal direction
   for ( unsigned short n = 0 ; n < this->m_fstar_updates[this->m_fstar_direction][0] ; n++ )
@@ -572,7 +574,6 @@ unsigned int UpdateoutDir;
 		double newLength=dn+this->m_LengthArray[neighborAndOut];
 		 double oldAvgCost=this->m_AvgCostArray[neighborAndOut];
 
-		 double currentAvgCost = this->m_AvgCostArray[voxelAndIn] ;
 		  double newAvgCost = newCost / newLength ;
 		  
 		  if ( newAvgCost < oldAvgCost)
@@ -580,11 +581,13 @@ unsigned int UpdateoutDir;
 		      newAvgCost = oldAvgCost;
 		    } 
 		  
-		  if ( newAvgCost*1.05 < currentAvgCost ) 
+		  if ( newAvgCost*1.05 < NewMiniAvgCost ) // 
 		    {
 			update=true;
 			UpdateneighborIterator=neighborIterator;
 			UpdateoutDir=outDir;
+
+			NewMiniAvgCost = newAvgCost;
 		    }
 		} // if mouse data
 
@@ -628,11 +631,15 @@ if( x==46 && y==47 && z==38 ) // 2 source= [46,48,38] => get values in [46,47,38
 if( x==46 && y==48 && z==38 ) // 1 source= [46,47,38] => get values in [46,48,38] -> minDir = 1 and min =0.17004
 {
 	double minCost=INF;
-	double minDir;
+	unsigned int minDir;
 	for ( unsigned int inDir = 0 ; inDir < this->m_NumberOfDirs ; inDir++ )  
 	{
 	  unsigned int voxelAndIn = voxelIndexTimesNDirs + inDir ;
-	   if( this->m_AvgCostArray[voxelAndIn] < minCost) minDir=inDir;
+	   if( this->m_AvgCostArray[voxelAndIn] < minCost)
+		{
+			minDir=inDir;
+			minCost=this->m_AvgCostArray[voxelAndIn];
+		}
 	}
 
     unsigned int voxelAndIn = voxelIndexTimesNDirs + minDir ;
@@ -945,14 +952,14 @@ bool ODFCost::UpdateCost ( unsigned long index, unsigned long voxelIndex, double
 { // index= VoxelAndIn
   double currentAvgCost = this->m_AvgCostArray[index] ;
   double newAvgCost = newCost / newLength ;
-  
+  /*
   if ( newAvgCost < oldAvgCost)
     {
       newAvgCost = oldAvgCost;
     } 
   
   if ( newAvgCost*1.05 < currentAvgCost ) 
-    {
+    {*/
      this->m_CostArray[index] = newCost ;
       this->m_Converged = false ;
       this->m_NChanged++ ;
@@ -969,7 +976,7 @@ bool ODFCost::UpdateCost ( unsigned long index, unsigned long voxelIndex, double
       this->m_OrigOutDir[voxelIndex] = outdir;
 
        return true;
-    }
+//    }
 return false;
 }
 
