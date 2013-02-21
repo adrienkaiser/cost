@@ -524,6 +524,15 @@ void ODFCost::VisitVoxel ( unsigned long x, unsigned long y, unsigned long z ,in
   unsigned int origInDir ;
   unsigned int origOutDir ;
 
+
+// for each incoming dir
+for ( unsigned int inDir = 0 ; inDir < this->m_NumberOfDirs ; inDir++ )  
+{
+bool update=false;
+unsigned long UpdateneighborIterator;
+unsigned int UpdateoutDir;
+  unsigned int voxelAndIn = voxelIndexTimesNDirs + inDir ;
+
   // instead of all 26 neighbors, only visit the neighbors as indicated by fstar for our current traversal direction
   for ( unsigned short n = 0 ; n < this->m_fstar_updates[this->m_fstar_direction][0] ; n++ )
     {
@@ -538,11 +547,6 @@ void ODFCost::VisitVoxel ( unsigned long x, unsigned long y, unsigned long z ,in
       origInDir = this->m_OrigInDir[ neighborIndex ];
       origOutDir = this->m_OrigOutDir[ neighborIndex];
    
-	// for each incoming dir
-	for ( unsigned int inDir = 0 ; inDir < this->m_NumberOfDirs ; inDir++ )  
-	{
-	  unsigned int voxelAndIn = voxelIndexTimesNDirs + inDir ;
-
 	  // for each outgoing dir
 	   for ( unsigned int outDir = 0 ; outDir < this->m_NumberOfDirs ; outDir++ )
 	    {
@@ -563,20 +567,55 @@ void ODFCost::VisitVoxel ( unsigned long x, unsigned long y, unsigned long z ,in
 
 		  newStepCost = (  this->m_alpha*f_odf + cost ) * dn ;
 
-	// l.651: void ODFCost::UpdateCost ( unsigned long index, unsigned long voxelIndex, double newCost,           double oldAvgCost,                   double newLength,                    unsigned int newOrig,       unsigned int indir, unsigned int outdir, unsigned int neighbor, unsigned int neighborAndOut)
-		  if(this->UpdateCost ( voxelAndIn, voxelIndex, newStepCost + this->m_CostArray[neighborAndOut], this->m_AvgCostArray[neighborAndOut], dn+this->m_LengthArray[neighborAndOut], this->m_OrigArray[neighborAndOut], inDir, outDir, neighborIterator ,neighborAndOut))
-			{
-			   this->m_ODFVoxInArray[voxelAndIn] = f_odf1;
-			   this->m_ODFNeiOutArray[voxelAndIn] = f_odf2;
-			   this->m_PenInOutArray[voxelAndIn] = this->m_AnglePenaltyTable[inDir][outDir];
-			   this->m_PenInDnArray[voxelAndIn] = this->m_NeighborAnglePenaltyTable[inDir][neighborIterator];
-			   this->m_PenOutDnArray[voxelAndIn] = this->m_NeighborAnglePenaltyTable[outDir][neighborIterator];
-			}
+		// test if cost needs to be updated
+		double newCost=newStepCost + this->m_CostArray[neighborAndOut];
+		double newLength=dn+this->m_LengthArray[neighborAndOut];
+		 double oldAvgCost=this->m_AvgCostArray[neighborAndOut];
 
+		 double currentAvgCost = this->m_AvgCostArray[voxelAndIn] ;
+		  double newAvgCost = newCost / newLength ;
+		  
+		  if ( newAvgCost < oldAvgCost)
+		    {
+		      newAvgCost = oldAvgCost;
+		    } 
+		  
+		  if ( newAvgCost*1.05 < currentAvgCost ) 
+		    {
+			update=true;
+			UpdateneighborIterator=neighborIterator;
+			UpdateoutDir=outDir;
+		    }
 		} // if mouse data
+
 	    }// for each outgoing dir
-	} // for each incoming dir
-    } // for each neighbor
+	} // for each neighbor
+
+	  if(update)
+	  {
+		unsigned long UpdateneighborAndOut = this->m_NeighborIndexTable[voxelIndex][UpdateneighborIterator] * this->m_NumberOfDirs + UpdateoutDir ;
+
+   		   double dn = this->m_DNTable[UpdateneighborIterator] ;
+
+		  double Updatef_odf1 =  this->m_FinslerTable[voxelAndIn];  
+		  double Updatef_odf2 = this->m_FinslerTable[UpdateneighborAndOut];
+		  double Updatef_odf = Updatef_odf1 + Updatef_odf2;
+
+		  double Updatecost = this->m_NeighborAnglePenaltyTable[inDir][UpdateneighborIterator] + this->m_NeighborAnglePenaltyTable[UpdateoutDir][UpdateneighborIterator]+this->m_AnglePenaltyTable[inDir][UpdateoutDir];
+
+		  newStepCost = (  this->m_alpha*Updatef_odf + Updatecost ) * dn ;
+
+	// l.651: void ODFCost::UpdateCost ( unsigned long index, unsigned long voxelIndex, double newCost,           double oldAvgCost,                   double newLength,                    unsigned int newOrig,       unsigned int indir, unsigned int outdir, unsigned int neighbor, unsigned int neighborAndOut)
+		  this->UpdateCost ( voxelAndIn, voxelIndex, newStepCost + this->m_CostArray[UpdateneighborAndOut], this->m_AvgCostArray[UpdateneighborAndOut], dn+this->m_LengthArray[UpdateneighborAndOut], this->m_OrigArray[UpdateneighborAndOut], inDir, UpdateoutDir, UpdateneighborIterator ,UpdateneighborAndOut);
+
+		   this->m_ODFVoxInArray[voxelAndIn] = Updatef_odf1;
+		   this->m_ODFNeiOutArray[voxelAndIn] = Updatef_odf2;
+		   this->m_PenInOutArray[voxelAndIn] = this->m_AnglePenaltyTable[inDir][UpdateoutDir];
+		   this->m_PenInDnArray[voxelAndIn] = this->m_NeighborAnglePenaltyTable[inDir][UpdateneighborIterator];
+		   this->m_PenOutDnArray[voxelAndIn] = this->m_NeighborAnglePenaltyTable[UpdateoutDir][UpdateneighborIterator];
+	  } // if update
+
+    } // for each incoming dir
 
 //  std::cout<<"["<<x<<","<<y<<","<<z<<"] (iter="<<iter<<", inDir="<<inDir <<") AvgCost( "<<voxelAndIn<<" )= "<< this->m_AvgCostArray[voxelAndIn] << std::endl;
 
