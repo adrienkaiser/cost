@@ -523,99 +523,7 @@ void ODFCost::VisitVoxel ( unsigned long x, unsigned long y, unsigned long z ,in
 
   unsigned int origInDir ;
   unsigned int origOutDir ;
-/*
-// for each incoming dir
-for ( unsigned int inDir = 0 ; inDir < this->m_NumberOfDirs ; inDir++ )  
-{
-bool update=false;
-unsigned long UpdateneighborIterator;
-unsigned int UpdateoutDir;
-  unsigned int voxelAndIn = voxelIndexTimesNDirs + inDir ;
 
-  // instead of all 26 neighbors, only visit the neighbors as indicated by fstar for our current traversal direction
-  for ( unsigned short n = 0 ; n < this->m_fstar_updates[this->m_fstar_direction][0] ; n++ )
-    {
-      neighborIterator = this->m_fstar_updates[this->m_fstar_direction][n+1] ;
-
-      if ( ! this->m_NeighborValidTable[voxelIndex][neighborIterator] ) continue ;
-      neighborIndex = this->m_NeighborIndexTable[voxelIndex][neighborIterator] ;
-
-      neighborIndexTimesNDirs = neighborIndex * this->m_NumberOfDirs ;
-      double dn = this->m_DNTable[neighborIterator] ;
-
-      origInDir = this->m_OrigInDir[ neighborIndex ];
-      origOutDir = this->m_OrigOutDir[ neighborIndex];
-   
-	  // for each outgoing dir
-	   for ( unsigned int outDir = 0 ; outDir < this->m_NumberOfDirs ; outDir++ )
-	    {
-	      unsigned int neighborAndOut = neighborIndexTimesNDirs+outDir ;
-
-	      //I use this constraints for mouse data, it's unneccessary for synthetic data
-	      if(this->m_DirectionTable[inDir][origInDir] && this->m_DirectionTable[outDir][origOutDir])
-	     	{
- 		  double preAngleCost =  this->m_AnglePenaltyTable[inDir][origInDir] + this->m_AnglePenaltyTable[outDir][origOutDir] ;
-
-		  double f_odf1 =  this->m_FinslerTable[voxelAndIn];  
-		  double f_odf2 = this->m_FinslerTable[neighborAndOut];
-		  double f_odf = f_odf1 + f_odf2;
-
-		  //For synthetic data, we do not need the preAngleCost part
-		 double cost = this->m_NeighborAnglePenaltyTable[inDir][neighborIterator] + this->m_NeighborAnglePenaltyTable[outDir][neighborIterator]+this->m_AnglePenaltyTable[inDir][outDir]+preAngleCost;
-		  //double cost = this->m_NeighborAnglePenaltyTable[inDir][neighborIterator] + this->m_NeighborAnglePenaltyTable[outDir][neighborIterator]+this->m_AnglePenaltyTable[inDir][outDir];
-
-		  newStepCost = (  this->m_alpha*f_odf + cost ) * dn ;
-
-		// test if cost needs to be updated
-		double newCost=newStepCost + this->m_CostArray[neighborAndOut];
-		double newLength=dn+this->m_LengthArray[neighborAndOut];
-		 double oldAvgCost=this->m_AvgCostArray[neighborAndOut];
-
-		 double currentAvgCost = this->m_AvgCostArray[voxelAndIn] ;
-		  double newAvgCost = newCost / newLength ;
-		  
-		  if ( newAvgCost < oldAvgCost)
-		    {
-		      newAvgCost = oldAvgCost;
-		    } 
-		  
-		  if ( newAvgCost*1.05 < currentAvgCost ) 
-		    {
-			update=true;
-			UpdateneighborIterator=neighborIterator;
-			UpdateoutDir=outDir;
-		    }
-		} // if mouse data
-
-	    }// for each outgoing dir
-	} // for each neighbor
-
-	  if(update)
-	  {
-		unsigned long UpdateneighborAndOut = this->m_NeighborIndexTable[voxelIndex][UpdateneighborIterator] * this->m_NumberOfDirs + UpdateoutDir ;
-
-   		   double dn = this->m_DNTable[UpdateneighborIterator] ;
-
-		  double Updatef_odf1 =  this->m_FinslerTable[voxelAndIn];  
-		  double Updatef_odf2 = this->m_FinslerTable[UpdateneighborAndOut];
-		  double Updatef_odf = Updatef_odf1 + Updatef_odf2;
-
-		  double Updatecost = this->m_NeighborAnglePenaltyTable[inDir][UpdateneighborIterator] + this->m_NeighborAnglePenaltyTable[UpdateoutDir][UpdateneighborIterator]+this->m_AnglePenaltyTable[inDir][UpdateoutDir];
-
-		  newStepCost = (  this->m_alpha*Updatef_odf + Updatecost ) * dn ;
-
-	// l.651: void ODFCost::UpdateCost ( unsigned long index, unsigned long voxelIndex, double newCost,           double oldAvgCost,                   double newLength,                    unsigned int newOrig,       unsigned int indir, unsigned int outdir, unsigned int neighbor, unsigned int neighborAndOut)
-		  this->UpdateCost ( voxelAndIn, voxelIndex, newStepCost + this->m_CostArray[UpdateneighborAndOut], this->m_AvgCostArray[UpdateneighborAndOut], dn+this->m_LengthArray[UpdateneighborAndOut], this->m_OrigArray[UpdateneighborAndOut], inDir, UpdateoutDir, UpdateneighborIterator ,UpdateneighborAndOut);
-
-		   this->m_ODFVoxInArray[voxelAndIn] = Updatef_odf1;
-		   this->m_ODFNeiOutArray[voxelAndIn] = Updatef_odf2;
-		   this->m_PenInOutArray[voxelAndIn] = this->m_AnglePenaltyTable[inDir][UpdateoutDir];
-		   this->m_PenInDnArray[voxelAndIn] = this->m_NeighborAnglePenaltyTable[inDir][UpdateneighborIterator];
-		   this->m_PenOutDnArray[voxelAndIn] = this->m_NeighborAnglePenaltyTable[UpdateoutDir][UpdateneighborIterator];
-	  } // if update
-
-    } // for each incoming dir
-*/
   // instead of all 26 neighbors, only visit the neighbors as indicated by fstar for our current traversal direction
   for ( unsigned short n = 0 ; n < this->m_fstar_updates[this->m_fstar_direction][0] ; n++ )
     {
@@ -680,8 +588,8 @@ if( x==46 && y==47 && z==38 ) // 2 source= [46,48,38] => get values in [46,47,38
 
 if( x==46 && y==48 && z==38 ) // 1 source= [46,47,38] => get values in [46,48,38] -> minDir = 1 and min =0.17004
 {
-double minCost=INF;
-double minDir;
+	double minCost=INF;
+	double minDir;
 	for ( unsigned int inDir = 0 ; inDir < this->m_NumberOfDirs ; inDir++ )  
 	{
 	  unsigned int voxelAndIn = voxelIndexTimesNDirs + inDir ;
@@ -834,12 +742,12 @@ std::cout<< "this->m_XDim= "<<this->m_XDim<<" | this->m_Slice= "<<this->m_Slice<
 	      for ( unsigned long dir = 0 ; dir < this->m_NumberOfDirs ; dir++ )
 		{
 		 
-
-if(x==46 && y==48 && z==38) // to display on sphere
-{
-  std::cout<<dir<<","<<this->m_ODFVoxInArray[indexTimesNDirs+dir]<<","<<this->m_ODFNeiOutArray[indexTimesNDirs+dir]<<std::endl;
-}
-
+/*
+		if(x==46 && y==48 && z==38) // to display on sphere
+		{
+		  std::cout<<dir<<","<<this->m_ODFVoxInArray[indexTimesNDirs+dir]<<","<<this->m_ODFNeiOutArray[indexTimesNDirs+dir]<<std::endl;
+		}
+*/
 		  currentCost = this->m_AvgCostArray[indexTimesNDirs+dir];
 		  sum += currentCost;		    
 
@@ -850,11 +758,11 @@ if(x==46 && y==48 && z==38) // to display on sphere
 		      minOrig = this->m_OrigArray[indexTimesNDirs+dir] ;
 		      minLength = this->m_LengthArray[indexTimesNDirs+dir] ;
 
-  minODFVoxIn=this->m_ODFVoxInArray[indexTimesNDirs+dir] ;
-  minODFNeiOut=this->m_ODFNeiOutArray[indexTimesNDirs+dir] ;
-  minPenInOut=this->m_PenInOutArray[indexTimesNDirs+dir] ;
-  minPenInDn=this->m_PenInDnArray[indexTimesNDirs+dir] ;
-  minPenOutDn=this->m_PenOutDnArray[indexTimesNDirs+dir] ;
+		  minODFVoxIn=this->m_ODFVoxInArray[indexTimesNDirs+dir] ;
+		  minODFNeiOut=this->m_ODFNeiOutArray[indexTimesNDirs+dir] ;
+		  minPenInOut=this->m_PenInOutArray[indexTimesNDirs+dir] ;
+		  minPenInDn=this->m_PenInDnArray[indexTimesNDirs+dir] ;
+		  minPenOutDn=this->m_PenOutDnArray[indexTimesNDirs+dir] ;
 	    }
 
 		  if(minODF > this->m_FinslerTable[indexTimesNDirs+ dir])
@@ -873,34 +781,34 @@ if(x==46 && y==48 && z==38) // to display on sphere
 	      this->m_FinalOrigArray[index] = minOrig ;
 	      this->m_FinalLengthArray[index] = minLength ;
 
-if(x==46 && y==48 && z==38) // to display on sphere
-{
-  std::cout<<"46,48,38: final length="<<minLength<<std::endl;
-}
+		if(x==46 && y==48 && z==38) // to display on sphere
+		{
+		  std::cout<<"46,48,38: final length="<<minLength<<std::endl;
+		}
 
-if(minODFVoxIn!=INF)   this->m_FinalODFVoxInArray[index] = minODFVoxIn ;
-if(minODFNeiOut!=INF)  this->m_FinalODFNeiOutArray[index] = minODFNeiOut ;
-if(minPenInOut!=INF)  this->m_FinalPenInOutArray[index] = minPenInOut ;
-if(minPenInDn!=INF)  this->m_FinalPenInDnArray[index] = minPenInDn ;
-if(minPenOutDn!=INF)  this->m_FinalPenOutDnArray[index] = minPenOutDn ;
+		if(minODFVoxIn!=INF)   this->m_FinalODFVoxInArray[index] = minODFVoxIn ;
+		if(minODFNeiOut!=INF)  this->m_FinalODFNeiOutArray[index] = minODFNeiOut ;
+		if(minPenInOut!=INF)  this->m_FinalPenInOutArray[index] = minPenInOut ;
+		if(minPenInDn!=INF)  this->m_FinalPenInDnArray[index] = minPenInDn ;
+		if(minPenOutDn!=INF)  this->m_FinalPenOutDnArray[index] = minPenOutDn ;
 
 	      index++ ;
 	      indexTimesNDirs += this->m_NumberOfDirs ;
 
-  unsigned long voxelIndex = x + y * this->m_XDim + z * this->m_Slice ;
-  unsigned long voxelIndexTimesNDirs = voxelIndex * this->m_NumberOfDirs ;
-  unsigned int  voxelAndIn = voxelIndexTimesNDirs + mindir ;
+		  unsigned long voxelIndex = x + y * this->m_XDim + z * this->m_Slice ;
+		  unsigned long voxelIndexTimesNDirs = voxelIndex * this->m_NumberOfDirs ;
+		  unsigned int  voxelAndIn = voxelIndexTimesNDirs + mindir ;
 
-unsigned long neighborWithDirs = this->m_NeighborArray[voxelAndIn]; // neighbor with directions
-unsigned long neighborWithNODirs = (int)(neighborWithDirs/this->m_NumberOfDirs) ; // neighbor with NO directions : ex : voxelAndIn -> voxelIndex // r=a-b*q // a=154, b=5 : q=30, r=4 : neighborWithNODirs = q (= voxelIndex)
+		unsigned long neighborWithDirs = this->m_NeighborArray[voxelAndIn]; // neighbor with directions
+		unsigned long neighborWithNODirs = (int)(neighborWithDirs/this->m_NumberOfDirs) ; // neighbor with NO directions : ex : voxelAndIn -> voxelIndex // r=a-b*q // a=154, b=5 : q=30, r=4 : neighborWithNODirs = q (= voxelIndex)
 
-FinalNeighbors[voxelIndex]=neighborWithNODirs;
+		FinalNeighbors[voxelIndex]=neighborWithNODirs;
 
 
-if( (x==46 && y==47 && z==38) || (x==46 && y==48 && z==38) ) // (pair 1/2)
-{
-std::cout<<"Final Cost= "<< minCost << std::endl;
-}
+		if( (x==46 && y==47 && z==38) || (x==46 && y==48 && z==38) ) // (pair 1/2)
+		{
+		std::cout<<"Final Cost= "<< minCost << std::endl;
+		}
 
 	    }
 	}
@@ -916,23 +824,23 @@ std::cout<<"Final Cost= "<< minCost << std::endl;
 	unsigned long target = xt + yt * this->m_XDim + zt * this->m_Slice ;
 
 	unsigned long neighbor= target;
-int zn=(int)(neighbor/this->m_Slice);
-int yn=(int)( (neighbor-zn*this->m_Slice) / this->m_XDim );
-int xn= neighbor - zn*this->m_Slice - yn*this->m_XDim;
+	int zn=(int)(neighbor/this->m_Slice);
+	int yn=(int)( (neighbor-zn*this->m_Slice) / this->m_XDim );
+	int xn= neighbor - zn*this->m_Slice - yn*this->m_XDim;
 	std::cout<<neighbor<<" \t| "<<xn<<","<<yn<<","<<zn<<std::endl;
-int Nbneighbors=0;
+	int Nbneighbors=0;
 	while (neighbor!=source && Nbneighbors<1000000)
 	{
 	m_FinalPathArray[neighbor]=1;
 	neighbor=FinalNeighbors[neighbor];
 	std::cout<<" v "<<std::endl;
-zn=(int)(neighbor/this->m_Slice);
-yn=(int)( (neighbor-zn*this->m_Slice) / this->m_XDim );
-xn= neighbor - zn*this->m_Slice - yn*this->m_XDim;
+	zn=(int)(neighbor/this->m_Slice);
+	yn=(int)( (neighbor-zn*this->m_Slice) / this->m_XDim );
+	xn= neighbor - zn*this->m_Slice - yn*this->m_XDim;
 	std::cout<<neighbor<<" \t| "<<xn<<","<<yn<<","<<zn<<std::endl;
-Nbneighbors++;
+	Nbneighbors++;
 	}
-std::cout<<"Nbneighbors="<<Nbneighbors<<std::endl;
+	std::cout<<"Nbneighbors="<<Nbneighbors<<std::endl;
 
 }
 
