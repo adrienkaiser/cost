@@ -55,7 +55,7 @@ class ODFCost
 	{
 	  return m_FinalLengthImage ;
 	}
-
+/*
       DoubleImageType::Pointer GetpathImage ()
 	{
 	  return m_FinalPathImage ;
@@ -81,16 +81,14 @@ class ODFCost
 	{
 	  return m_FinalPenOutDnImage ;
 	}
-
+*/
 
    protected:
       unsigned long 	         m_XDim, m_YDim, m_ZDim, m_Slice ;
       unsigned long              m_NumberOfDirs ;
       ODFImageType::Pointer      m_ODFImage, m_ODFQCImage ;
-      ODFImageType::Pointer      m_CostImage, m_LengthImage, m_AvgCostImage, m_OrigImage, m_NeighborImage ;
-      ODFImageType::Pointer      m_ODFVoxInImage, m_ODFNeiOutImage, m_PenInOutImage, m_PenInDnImage, m_PenOutDnImage ;
-      DoubleImageType::Pointer   m_FinalCostImage, m_FinalOrigImage, m_FinalLengthImage,m_FinalPathImage ;
-      DoubleImageType::Pointer   m_FinalODFVoxInImage, m_FinalODFNeiOutImage, m_FinalPenInOutImage,m_FinalPenInDnImage,m_FinalPenOutDnImage ;
+      ODFImageType::Pointer      m_CostImage, m_LengthImage, m_AvgCostImage, m_OrigImage;
+      DoubleImageType::Pointer   m_FinalCostImage, m_FinalOrigImage, m_FinalLengthImage;
 
       DoubleImageType::Pointer   m_FAImage ;
 
@@ -100,10 +98,8 @@ class ODFCost
       ODFType                    *m_ODFArray, *m_ODFQCArray ;
       unsigned long              *m_SourceArray ;
       double                     *m_FAArray ;
-      ODFType                    *m_CostArray, *m_LengthArray, *m_AvgCostArray, *m_OrigArray, *m_NeighborArray ;
-      ODFType                    *m_ODFVoxInArray, *m_ODFNeiOutArray, *m_PenInOutArray, *m_PenInDnArray, *m_PenOutDnArray ;
-      double                     *m_FinalODFVoxInArray, *m_FinalODFNeiOutArray, *m_FinalPenInOutArray, *m_FinalPenInDnArray, *m_FinalPenOutDnArray ;
-      double                     *m_FinalCostArray, *m_FinalOrigArray, *m_FinalLengthArray,*m_FinalPathArray ; 
+      ODFType                    *m_CostArray, *m_LengthArray, *m_AvgCostArray, *m_OrigArray;
+      double                     *m_FinalCostArray, *m_FinalOrigArray, *m_FinalLengthArray ; 
       double                      m_alpha ;
 
       double                       m_startx,m_starty,m_startz;

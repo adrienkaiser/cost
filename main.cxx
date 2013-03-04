@@ -248,7 +248,7 @@ int main(int argc, char * argv[])
   DoubleImageType::Pointer costImage = ODFCostComputer.Cost ( SourceImage ) ;
   DoubleImageType::Pointer origImage = ODFCostComputer.GetOrigImage ( ) ;
   DoubleImageType::Pointer lengthImage = ODFCostComputer.GetLengthImage ( ) ;
-
+/*
   DoubleImageType::Pointer pathImage = ODFCostComputer.GetpathImage ( ) ;
 
   DoubleImageType::Pointer ODFVoxInImage = ODFCostComputer.GetODFVoxInImage ( ) ;
@@ -256,7 +256,7 @@ int main(int argc, char * argv[])
   DoubleImageType::Pointer PenInOutImage = ODFCostComputer.GetPenInOutImage ( ) ;
   DoubleImageType::Pointer PenInDnImage = ODFCostComputer.GetPenInDnImage ( ) ;
   DoubleImageType::Pointer PenOutDnImage = ODFCostComputer.GetPenOutDnImage ( ) ;
-
+*/
 /*
   // write ODFVoxIn path image
   std::string ODFVoxInFileName = output_filename_base + "_ODFVoxIn.nrrd" ;
