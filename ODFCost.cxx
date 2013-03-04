@@ -52,7 +52,7 @@ ODFCost::DoubleImageType::Pointer ODFCost::Cost ( ODFCost::LabelImageType::Point
   std::cout << "Entering main loop" << std::endl ;
   unsigned i = 0 ;
 
-/* Display constant values*/
+/* Display constant values
 unsigned long int x1=46;
 unsigned long int y1=47;
 unsigned long int z1=38;
@@ -70,9 +70,9 @@ for ( unsigned long dir = 0 ; dir < this->m_NumberOfDirs ; dir++ )
 	unsigned int voxelAndIn1 = voxelIndexTimesNDirs1 + dir ;
 	unsigned int voxelAndIn2 = voxelIndexTimesNDirs2 + dir ;
 	std::cout<<"dir=,"<<dir<<" \t,"<<this->m_CoordinateTable[dir][0]<<"\t,"<<this->m_CoordinateTable[dir][1]<<"\t,"<<this->m_CoordinateTable[dir][2]<<"\t,]"<<std::endl;
-//	std::cout<<"dir="<<dir<<" \t: Finsler1=,"<<this->m_FinslerTable[voxelAndIn1]<<" , Finsler2=,"<<this->m_FinslerTable[voxelAndIn2]<<std::endl;
+	std::cout<<"dir="<<dir<<" \t: Finsler1=,"<<this->m_FinslerTable[voxelAndIn1]<<" , Finsler2=,"<<this->m_FinslerTable[voxelAndIn2]<<std::endl;
 }
-
+*/
   while ( !this->m_Converged ) 
     {
       iterationNum ++ ;
@@ -225,7 +225,7 @@ void ODFCost::CreateCostMaps ()
    this->m_FinalOrigImage = DoubleImageType::New () ;
    this->m_FinalLengthImage = DoubleImageType::New () ;
 
-
+/*
    this->m_FinalPathImage = DoubleImageType::New () ;
    this->m_NeighborImage = ODFImageType::New () ;
    this->m_ODFVoxInImage = ODFImageType::New () ;
@@ -239,7 +239,7 @@ void ODFCost::CreateCostMaps ()
    this->m_FinalPenInOutImage = DoubleImageType::New () ;
    this->m_FinalPenInDnImage = DoubleImageType::New () ;
    this->m_FinalPenOutDnImage = DoubleImageType::New () ;
-
+*/
    //added by Wenyu
 
    this->m_OrigInDirImage = DoubleImageType::New () ;
@@ -270,7 +270,7 @@ void ODFCost::CreateCostMaps ()
    this->m_OrigImage->SetSpacing ( spacing ) ;
    this->m_FinalOrigImage->SetSpacing ( spacing ) ;
    this->m_FinalLengthImage->SetSpacing ( spacing ) ;
-
+/*
    this->m_FinalPathImage->SetSpacing ( spacing ) ;
    this->m_NeighborImage->SetSpacing ( spacing ) ;
 
@@ -285,7 +285,7 @@ void ODFCost::CreateCostMaps ()
    this->m_FinalPenInOutImage->SetSpacing ( spacing ) ;
    this->m_FinalPenInDnImage->SetSpacing ( spacing ) ;
    this->m_FinalPenOutDnImage->SetSpacing ( spacing ) ;
-
+*/
    //added by Wenyu
    this->m_OrigInDirImage->SetSpacing ( spacing ) ;
    this->m_OrigOutDirImage->SetSpacing ( spacing ) ;
@@ -299,7 +299,7 @@ void ODFCost::CreateCostMaps ()
    this->m_OrigImage->SetOrigin ( origin ) ;
    this->m_FinalOrigImage->SetOrigin ( origin ) ;
    this->m_FinalLengthImage->SetOrigin ( origin ) ;
-
+/*
    this->m_FinalPathImage->SetOrigin ( origin ) ;
    this->m_NeighborImage->SetOrigin ( origin ) ;
 
@@ -314,7 +314,7 @@ void ODFCost::CreateCostMaps ()
    this->m_FinalPenInOutImage->SetOrigin ( origin ) ;
    this->m_FinalPenInDnImage->SetOrigin ( origin ) ;
    this->m_FinalPenOutDnImage->SetOrigin ( origin ) ;
-
+*/
 
    this->m_OrigInDirImage->SetOrigin ( origin ) ;
    this->m_OrigOutDirImage->SetOrigin ( origin ) ;
@@ -353,7 +353,7 @@ void ODFCost::CreateCostMaps ()
    this->m_FinalLengthImage->SetRegions ( region ) ;
    this->m_FinalLengthImage->Allocate () ;
    this->m_FinalLengthImage->FillBuffer ( 0 ) ;
-
+/*
    this->m_FinalPathImage->SetRegions ( region ) ;
    this->m_FinalPathImage->Allocate () ;
    this->m_FinalPathImage->FillBuffer ( 0 ) ;
@@ -407,7 +407,7 @@ void ODFCost::CreateCostMaps ()
    this->m_FinalPenOutDnImage->SetRegions ( region ) ;
    this->m_FinalPenOutDnImage->Allocate () ;
    this->m_FinalPenOutDnImage->FillBuffer ( 0 ) ;
-
+*/
    //added by Wenyu
 
    this->m_OrigInDirImage->SetRegions ( region ) ;
@@ -426,7 +426,7 @@ void ODFCost::CreateCostMaps ()
    this->m_OrigArray = this->m_OrigImage->GetPixelContainer()->GetBufferPointer();
    this->m_FinalOrigArray = this->m_FinalOrigImage->GetPixelContainer()->GetBufferPointer();
    this->m_FinalLengthArray = this->m_FinalLengthImage->GetPixelContainer()->GetBufferPointer();
-
+/*
    this->m_NeighborArray = this->m_NeighborImage->GetPixelContainer()->GetBufferPointer();
 
    this->m_FinalPathArray = this->m_FinalPathImage->GetPixelContainer()->GetBufferPointer();
@@ -442,7 +442,7 @@ void ODFCost::CreateCostMaps ()
    this->m_FinalPenInOutArray = this->m_FinalPenInOutImage->GetPixelContainer()->GetBufferPointer();
    this->m_FinalPenInDnArray = this->m_FinalPenInDnImage->GetPixelContainer()->GetBufferPointer();
    this->m_FinalPenOutDnArray = this->m_FinalPenOutDnImage->GetPixelContainer()->GetBufferPointer();
-
+*/
 
  //added by Wenyu
    this->m_OrigInDir = this->m_OrigInDirImage->GetPixelContainer()->GetBufferPointer();
@@ -535,7 +535,7 @@ void ODFCost::VisitVoxel ( unsigned long x, unsigned long y, unsigned long z ,in
       neighborIndexTimesNDirs = neighborIndex * this->m_NumberOfDirs ;
       double dn = this->m_DNTable[neighborIterator] ;
 
-      origInDir = this->m_OrigInDir[ neighborIndex ];
+      //origInDir = this->m_OrigInDir[ neighborIndex ];
       origOutDir = this->m_OrigOutDir[ neighborIndex];
    
 	// for each incoming dir
@@ -549,9 +549,11 @@ void ODFCost::VisitVoxel ( unsigned long x, unsigned long y, unsigned long z ,in
 	      unsigned int neighborAndOut = neighborIndexTimesNDirs+outDir ;
 
 	      //I use this constraints for mouse data, it's unneccessary for synthetic data
-	      if(this->m_DirectionTable[inDir][origInDir] && this->m_DirectionTable[outDir][origOutDir])
+	      //if(this->m_DirectionTable[inDir][origInDir] && this->m_DirectionTable[outDir][origOutDir])
+	      if(this->m_DirectionTable[inDir][origOutDir])
 	     	{
- 		  double preAngleCost =  this->m_AnglePenaltyTable[inDir][origInDir] + this->m_AnglePenaltyTable[outDir][origOutDir] ;
+ 		  //double preAngleCost =  this->m_AnglePenaltyTable[inDir][origInDir] + this->m_AnglePenaltyTable[outDir][origOutDir] ;
+ 		  double preAngleCost =  this->m_AnglePenaltyTable[inDir][origOutDir];
 
 		  double f_odf1 =  this->m_FinslerTable[voxelAndIn];  
 		  double f_odf2 = this->m_FinslerTable[neighborAndOut];
@@ -565,21 +567,21 @@ void ODFCost::VisitVoxel ( unsigned long x, unsigned long y, unsigned long z ,in
 
 	// l.651: void ODFCost::UpdateCost ( unsigned long index, unsigned long voxelIndex, double newCost,           double oldAvgCost,                   double newLength,                    unsigned int newOrig,       unsigned int indir, unsigned int outdir, unsigned int neighbor, unsigned int neighborAndOut)
 		  if(this->UpdateCost ( voxelAndIn, voxelIndex, newStepCost + this->m_CostArray[neighborAndOut], this->m_AvgCostArray[neighborAndOut], dn+this->m_LengthArray[neighborAndOut], this->m_OrigArray[neighborAndOut], inDir, outDir, neighborIterator ,neighborAndOut))
-			{
+			{/*
 			   this->m_ODFVoxInArray[voxelAndIn] = f_odf1;
 			   this->m_ODFNeiOutArray[voxelAndIn] = f_odf2;
 			   this->m_PenInOutArray[voxelAndIn] = this->m_AnglePenaltyTable[inDir][outDir];
 			   this->m_PenInDnArray[voxelAndIn] = this->m_NeighborAnglePenaltyTable[inDir][neighborIterator];
-			   this->m_PenOutDnArray[voxelAndIn] = this->m_NeighborAnglePenaltyTable[outDir][neighborIterator];
+			   this->m_PenOutDnArray[voxelAndIn] = this->m_NeighborAnglePenaltyTable[outDir][neighborIterator];*/
 			}
 
 		} // if mouse data
-	    }// for each outgoing dir
+	    } // for each outgoing dir
 	} // for each incoming dir
     } // for each neighbor
 
 //  std::cout<<"["<<x<<","<<y<<","<<z<<"] (iter="<<iter<<", inDir="<<inDir <<") AvgCost( "<<voxelAndIn<<" )= "<< this->m_AvgCostArray[voxelAndIn] << std::endl;
-
+/*
 if( x==46 && y==47 && z==38 ) // 2 source= [46,48,38] => get values in [46,47,38] -> minDir = 12 and min =0.17414
 {
     unsigned int voxelAndIn = voxelIndexTimesNDirs + 12 ;
@@ -587,19 +589,24 @@ if( x==46 && y==47 && z==38 ) // 2 source= [46,48,38] => get values in [46,47,38
 }
 
 if( x==46 && y==48 && z==38 ) // 1 source= [46,47,38] => get values in [46,48,38] -> minDir = 1 and min =0.17004
-{
+  {
+	// find best dir in current voxel
 	double minCost=INF;
-	double minDir;
+	unsigned int minDir;
 	for ( unsigned int inDir = 0 ; inDir < this->m_NumberOfDirs ; inDir++ )  
 	{
 	  unsigned int voxelAndIn = voxelIndexTimesNDirs + inDir ;
-	   if( this->m_AvgCostArray[voxelAndIn] < minCost) minDir=inDir;
+	   if( this->m_AvgCostArray[voxelAndIn] < minCost)
+		{
+			minDir=inDir;
+			minCost=this->m_AvgCostArray[voxelAndIn];
+		}
 	}
 
     unsigned int voxelAndIn = voxelIndexTimesNDirs + minDir ;
     std::cout<<pass<<","<<iter<<","<<minDir<<","<< this->m_AvgCostArray[voxelAndIn] << ","<< this->m_CostArray[voxelAndIn] <<","<< this->m_LengthArray[voxelAndIn] <<","<< this->m_OrigArray[voxelAndIn] <<std::endl;
 }
-
+*/
 } // end function
 
 void ODFCost::PrecomputeDirection()
@@ -709,14 +716,14 @@ void ODFCost::CreateFinslerTable()
 // for each voxel, the final cost is the minimum cost among the costs associated with all the directions
 void ODFCost::ComputeFinalCosts ()
 {
-
+/*
 // 106 * 106 * 76 = 853936
 unsigned long FinalNeighbors[853936];
-
+*/
   unsigned long int x, y, z, index = 0, indexTimesNDirs = 0 ;
   double currentCost, minCost, minLength ;
   unsigned int minOrig;
-std::cout<< "this->m_XDim= "<<this->m_XDim<<" | this->m_Slice= "<<this->m_Slice<<" | this->m_NumberOfDirs= "<<this->m_NumberOfDirs<<std::endl;
+//std::cout<< "this->m_XDim= "<<this->m_XDim<<" | this->m_Slice= "<<this->m_Slice<<" | this->m_NumberOfDirs= "<<this->m_NumberOfDirs<<std::endl;
 
   for ( z = 0 ; z < this->m_ZDim ; z++ )
     {
@@ -731,13 +738,13 @@ std::cout<< "this->m_XDim= "<<this->m_XDim<<" | this->m_Slice= "<<this->m_Slice<
 	      double minODF = 2;
 	      double odfcost;
 	      unsigned int odfdir;
-
+/*
               double minODFVoxIn=0;
               double minODFNeiOut=0;
               double minPenInOut=0;
               double minPenInDn=0;
               double minPenOutDn=0;
-
+*/
 	      double sum = 0;
 	      for ( unsigned long dir = 0 ; dir < this->m_NumberOfDirs ; dir++ )
 		{
@@ -757,12 +764,12 @@ std::cout<< "this->m_XDim= "<<this->m_XDim<<" | this->m_Slice= "<<this->m_Slice<
 		      minCost = currentCost ;
 		      minOrig = this->m_OrigArray[indexTimesNDirs+dir] ;
 		      minLength = this->m_LengthArray[indexTimesNDirs+dir] ;
-
+/*
 		  minODFVoxIn=this->m_ODFVoxInArray[indexTimesNDirs+dir] ;
 		  minODFNeiOut=this->m_ODFNeiOutArray[indexTimesNDirs+dir] ;
 		  minPenInOut=this->m_PenInOutArray[indexTimesNDirs+dir] ;
 		  minPenInDn=this->m_PenInDnArray[indexTimesNDirs+dir] ;
-		  minPenOutDn=this->m_PenOutDnArray[indexTimesNDirs+dir] ;
+		  minPenOutDn=this->m_PenOutDnArray[indexTimesNDirs+dir] ;*/
 	    }
 
 		  if(minODF > this->m_FinslerTable[indexTimesNDirs+ dir])
@@ -780,7 +787,7 @@ std::cout<< "this->m_XDim= "<<this->m_XDim<<" | this->m_Slice= "<<this->m_Slice<
 	      
 	      this->m_FinalOrigArray[index] = minOrig ;
 	      this->m_FinalLengthArray[index] = minLength ;
-
+/*
 		if(x==46 && y==48 && z==38) // to display on sphere
 		{
 		  std::cout<<"46,48,38: final length="<<minLength<<std::endl;
@@ -791,14 +798,14 @@ std::cout<< "this->m_XDim= "<<this->m_XDim<<" | this->m_Slice= "<<this->m_Slice<
 		if(minPenInOut!=INF)  this->m_FinalPenInOutArray[index] = minPenInOut ;
 		if(minPenInDn!=INF)  this->m_FinalPenInDnArray[index] = minPenInDn ;
 		if(minPenOutDn!=INF)  this->m_FinalPenOutDnArray[index] = minPenOutDn ;
-
+*/
 	      index++ ;
 	      indexTimesNDirs += this->m_NumberOfDirs ;
 
 		  unsigned long voxelIndex = x + y * this->m_XDim + z * this->m_Slice ;
 		  unsigned long voxelIndexTimesNDirs = voxelIndex * this->m_NumberOfDirs ;
 		  unsigned int  voxelAndIn = voxelIndexTimesNDirs + mindir ;
-
+/*
 		unsigned long neighborWithDirs = this->m_NeighborArray[voxelAndIn]; // neighbor with directions
 		unsigned long neighborWithNODirs = (int)(neighborWithDirs/this->m_NumberOfDirs) ; // neighbor with NO directions : ex : voxelAndIn -> voxelIndex // r=a-b*q // a=154, b=5 : q=30, r=4 : neighborWithNODirs = q (= voxelIndex)
 
@@ -809,11 +816,11 @@ std::cout<< "this->m_XDim= "<<this->m_XDim<<" | this->m_Slice= "<<this->m_Slice<
 		{
 		std::cout<<"Final Cost= "<< minCost << std::endl;
 		}
-
+*/
 	    }
 	}
     }
-	unsigned long int xs=46;
+/*	unsigned long int xs=46;
 	unsigned long int ys=47;
 	unsigned long int zs=38;
 	unsigned long int xt=46;
@@ -841,7 +848,7 @@ std::cout<< "this->m_XDim= "<<this->m_XDim<<" | this->m_Slice= "<<this->m_Slice<
 	Nbneighbors++;
 	}
 	std::cout<<"Nbneighbors="<<Nbneighbors<<std::endl;
-
+*/
 }
 
 // get the neighbor index (x+y*xDim+z*xDim*yDim) given current voxel and 0 <= neighbor < 27
@@ -906,7 +913,8 @@ bool ODFCost::UpdateCost ( unsigned long index, unsigned long voxelIndex, double
 { // index= VoxelAndIn
   double currentAvgCost = this->m_AvgCostArray[index] ;
   double newAvgCost = newCost / newLength ;
-  
+ 
+//Do we need this?? 
   if ( newAvgCost < oldAvgCost)
     {
       newAvgCost = oldAvgCost;
@@ -920,11 +928,11 @@ bool ODFCost::UpdateCost ( unsigned long index, unsigned long voxelIndex, double
       this->m_LengthArray[index] = newLength ;
       this->m_AvgCostArray[index] = newAvgCost ;
       this->m_OrigArray[index] = newOrig;
-//std::cout<<"PONEY6"<<std::endl;
+
       // added by Adrien Kaiser
 //      std::cout<<"voxel="<< index<<" \t| new neighbor="<<neighborAndOut<<std::endl;
-      this->m_NeighborArray[index] = neighborAndOut; // index is VoxelAndIn
-//std::cout<<"PONEY8"<<std::endl;
+//      this->m_NeighborArray[index] = neighborAndOut; // index is VoxelAndIn
+
       //added by Wenyu
       this->m_OrigInDir[voxelIndex] = indir;
       this->m_OrigOutDir[voxelIndex] = outdir;

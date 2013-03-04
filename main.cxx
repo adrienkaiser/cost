@@ -257,7 +257,7 @@ int main(int argc, char * argv[])
   DoubleImageType::Pointer PenInDnImage = ODFCostComputer.GetPenInDnImage ( ) ;
   DoubleImageType::Pointer PenOutDnImage = ODFCostComputer.GetPenOutDnImage ( ) ;
 
-
+/*
   // write ODFVoxIn path image
   std::string ODFVoxInFileName = output_filename_base + "_ODFVoxIn.nrrd" ;
   DoubleWriterType::Pointer ODFVoxInWriter = DoubleWriterType::New() ;
@@ -354,7 +354,7 @@ int main(int argc, char * argv[])
       std::cerr << "Problem writing the path file " << pathFileName << std::endl ;
       std::cerr << excp << std::endl ;
     }
-
+*/
   // write out cost image
   std::string costFileName = output_filename_base + "_cost.nrrd" ;
   DoubleWriterType::Pointer costWriter = DoubleWriterType::New() ;
@@ -370,7 +370,7 @@ int main(int argc, char * argv[])
       std::cerr << "Problem writing the cost file " << costFileName << std::endl ;
       std::cerr << excp << std::endl ;
     }
-
+/*
   // write out orig image
   std::string origFileName = output_filename_base + "_orig.nrrd" ;
   DoubleWriterType::Pointer origWriter = DoubleWriterType::New() ;
@@ -386,8 +386,8 @@ int main(int argc, char * argv[])
       std::cerr << "Problem writing the orig file " << costFileName << std::endl ;
       std::cerr << excp << std::endl ;
     }
-
-
+*/
+/*
   // write out length image
   std::string lengthFileName = output_filename_base + "_length.nrrd" ;
   DoubleWriterType::Pointer lengthWriter = DoubleWriterType::New() ;
@@ -403,7 +403,7 @@ int main(int argc, char * argv[])
       std::cerr << "Problem writing the orig file " << costFileName << std::endl ;
       std::cerr << excp << std::endl ;
     }
-  
+  */
   return 0;
 }
 
